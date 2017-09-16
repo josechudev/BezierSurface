@@ -99,6 +99,11 @@ bool init_resources(){
         points[i] = p[i];
     }
 
+    glGenBuffers(1,&vbo_surface);
+    glBindBuffer(GL_ARRAY_BUFFER,vbo_surface);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*p.size(),points,GL_STATIC_DRAW);
+
+
 	GLint link_ok = GL_FALSE;
     GLuint vs, fs;
     if((vs = create_shader("basic3.v.glsl", GL_VERTEX_SHADER))==0) return false;
