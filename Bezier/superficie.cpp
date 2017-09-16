@@ -93,6 +93,15 @@ bool init_resources(){
     }
 
     points = new GLfloat[p.size()];
+    colors = new GLfloat[p.size()];
+
+    for (int i = 0; i < p.size()/3; ++i)
+    {
+        colors[3*i] =0.0;
+        colors[3*i+1]=1.0;
+        colors[3*i+2]=0.0;
+
+    }
 
     for (int i = 0; i < p.size(); ++i)
     {
