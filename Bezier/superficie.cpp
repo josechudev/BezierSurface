@@ -27,6 +27,10 @@ int numPoints;
 
 int screen_width = 800, screen_height = 800;
 
+float dx = 0.0;
+float scale = 1.0;
+
+
 GLfloat cp[4][4][3] = {
     {{0.0, 0.0, 1.0},
      {0.0, 0.0, 0.66},
@@ -168,12 +172,36 @@ bool init_resources() {
     return true;
 }
 
+void keyboard(unsigned char key, int x, int y){
+    switch(key){
+        case 'd':
+            dx+= 0.05;
+            break;
+        case 'a':
+            dx+= -0.05;
+            break;
+        case 'i':
+            scale = scale * 1.02;
+            break;
+        case 'j':
+            scale = scale * 0.98;
+            break;
+    }
+    glutPostRedisplay(); 
+
+}
+
 void onDisplay(){
     //Creamos matrices de modelo, vista y proyeccion
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+    //glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(dx, 0, 0));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+
+
+
+
     glm::mat4 view  = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 projection = glm::perspective(45.0f, 1.0f*screen_width/screen_height, 0.1f, 10.0f);
-    glm::mat4 mvp = projection * view * model;
+    glm::mat4 mvp = projection * view * model ;
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -261,6 +289,7 @@ int main(int argc, char* argv[]){
     if(init_resources()){
         glutDisplayFunc(onDisplay);
         glutReshapeFunc(onReshape);
+        glutKeyboardFunc(keyboard); 
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
